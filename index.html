@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>FluxLang Документы</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0e0e0e, #1b1b2f);
+      color: #e0e0e0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      padding: 40px;
+      line-height: 1.6;
+      animation: backgroundShift 20s ease infinite;
+    }
+    @keyframes backgroundShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1, h2 {
+      background: linear-gradient(90deg, #8a2be2, #00bfff, #8a2be2);
+      background-size: 300% 300%;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: gradientFlow 6s ease infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      background: #121220;
+      color: #b4aaff;
+      font-family: "Fira Code", monospace;
+      padding: 15px;
+      border: 1px solid #333;
+      border-radius: 12px;
+      resize: vertical;
+      box-shadow: 0 0 12px #6f00ff44;
+      transition: box-shadow 0.4s ease;
+    }
+    textarea:focus {
+      outline: none;
+      box-shadow: 0 0 16px #8a2be2;
+    }
+
+    #preview, #filePreview {
+      background: #202030;
+      color: #e0e0e0;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 0 12px #1f1f3f;
+      margin-top: 30px;
+      font-size: 1rem;
+      transition: transform 0.4s ease;
+    }
+    #preview:hover, #filePreview:hover {
+      transform: scale(1.01);
+    }
+
+    button {
+      background: linear-gradient(270deg, #8a2be2, #00bfff, #8a2be2);
+      background-size: 400% 400%;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      margin: 10px 10px 20px 0;
+      font-weight: bold;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px #8a2be280;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: gradientFlow 8s ease infinite;
+    }
+    button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px #00bfff99;
+    }
+
+    input[type="file"], input[type="text"] {
+      margin-bottom: 15px;
+      color: #ccc;
+      background: #2b2b3b;
+      padding: 10px;
+      border: 1px solid #444;
+      border-radius: 8px;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+      display: block;
+    }
+    input[type="file"]:hover, input[type="text"]:hover {
+      border-color: #8a2be2;
+      box-shadow: 0 0 6px #8a2be2;
+    }
+
+    a {
+      color: #99e0ff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      text-decoration: underline;
+      color: #c0b6ff;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #444;
+      margin: 50px 0;
+      opacity: 0.3;
+    }
+  </style>
+</head>
+<body>
+  <h1>FluxLang - язык легкого програмирования</h1><br>
+  <h2>1. Редактор .fl-документа</h2>
+
+  <input type="file" id="openFileInput" accept=".fl">
+  <textarea id="code" placeholder="Введите FluxLang-код..."></textarea><br>
+
+  <input type="text" id="filenameInput" placeholder="Введите имя файла без расширения (.fl)" />
+
+  <button onclick="render()">📄 Преобразовать</button>
+  <button onclick="save()">💾 Сохранить как .fl</button>
+
+  <div id="preview"></div>
+  <hr>
+
+  <h2>2. Рассмотреть файл</h2>
+  <input type="file" id="viewInput" accept=".fl"><br>
+  <div id="filePreview">Выберите .fl файл для просмотра его содержимого.</div>
+
+  <script>
+    function parseFluxLang(code) {
+      return code
+        .replace(/\/b href="(.*?)"\/(.*?)\/\/b\//gs, '<a href="$1" target="_blank"><button>$2</button></a>')
+        .replace(/\/h\/(.*?)\/\//gs, '<h1>$1</h1>')
+        .replace(/\/ht\/(.*?)\/\//gs, '<h3>$1</h3>')
+        .replace(/\/t\/(.*?)\/\//gs, '<p>$1</p>')
+        .replace(/\/e\/(.*?)\/\//gs, '<i>$1</i>')
+        .replace(/\/big\/(.*?)\/\//gs, '<b>$1</b>')
+        .replace(/\/small\/(.*?)\/\//gs, '<small>$1</small>')
+        .replace(/\/b\/(.*?)\/\//gs, '<button>$1</button>')
+        .replace(/\/rb\//g, '<br>')
+        .replace(/\/href="(.*?)"\/(.*?)\/\/a\//gs, '<a href="$1" target="_blank">$2</a>')
+        .replace(/\/st\/(.*?)\/\//gs, '<s>$1</s>')
+        .replace(/\/u\/(.*?)\/\//gs, '<u>$1</u>')
+        .replace(/\/li\/(.*?)\/\//gs, '• $1<br>')
+        .replace(/\/li 1\/(.*?)\/\//gs, function(match, p1, offset, string) {
+          // Автоматическая нумерация
+          if (!window.__listCount) window.__listCount = 1;
+          return `${window.__listCount++}. ${p1}<br>`;
+        })
+        .replace(/\/cent\/(.*?)\/\//gs, '<div style="text-align:center;">$1</div>');
+    }
+
+    function render() {
+      window.__listCount = 1; // сброс счётчика перед каждым рендером
+      const input = document.getElementById('code').value;
+      const html = parseFluxLang(input);
+      document.getElementById('preview').innerHTML = html;
+    }
+
+    function save() {
+      const content = document.getElementById('code').value;
+      const filenameInput = document.getElementById('filenameInput').value.trim();
+      if (!filenameInput) {
+        alert("Введите имя файла перед сохранением.");
+        return;
+      }
+      const filename = `${filenameInput}.fl`;
+      const blob = new Blob([content], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = URL.createObjectURL(blob);
+      link.click();
+    }
+
+    document.getElementById('openFileInput').addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById('code').value = e.target.result;
+        };
+        reader.readAsText(file);
+      }
+    });
+
+    document.getElementById('viewInput').addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          window.__listCount = 1;
+          const parsed = parseFluxLang(e.target.result);
+          document.getElementById('filePreview').innerHTML = parsed;
+        };
+        reader.readAsText(file);
+      }
+    });
+  </script>
+
+  <hr>
+  <div style="text-align:center; margin-top: 40px;">
+    <p style="font-size: 1.2em; color: #ffccff;">
+      НЕ ЗНАЕШЬ ЯЗЫК FLUXLANG? НУ ТОГДА ТЕБЕ СЮДА:
+    </p>
+    <a href="https://murka-pon123.github.io/FLUXLANG-teg/" target="_blank">
+      <button>📘 Выучить FluxLang</button>
+    </a>
+  </div>
+</body>
+</html>
