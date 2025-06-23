@@ -1,269 +1,280 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <title>FluxLang Документы</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    @media (max-width: 768px) {
-      body { padding: 20px; }
-      textarea { height: 150px; font-size: 0.9rem; }
-      button { width: 100%; margin: 10px 0; }
-      input[type="file"], input[type="text"] { width: 100%; }
-      #preview, #filePreview { padding: 15px; font-size: 0.95rem; }
-      h1, h2 { font-size: 1.4em; }
-    }
+<!DOCTYPE html>  <html lang="ru">  
+<head>  
+  <meta charset="UTF-8" />  
+  <title>FluxLang Документы</title>  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <style>  
+    @media (max-width: 768px) {  
+      body { padding: 20px; }  
+      textarea { height: 150px; font-size: 0.9rem; }  
+      button { width: 100%; margin: 10px 0; }  
+      input[type="file"], input[type="text"] { width: 100%; }  
+      #preview, #filePreview { padding: 15px; font-size: 0.95rem; }  
+      h1, h2 { font-size: 1.4em; }  
+    }  body {  
+  background: linear-gradient(135deg, #0e0e0e, #1b1b2f);  
+  color: #e0e0e0;  
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;  
+  padding: 40px;  
+  line-height: 1.6;  
+  animation: backgroundShift 20s ease infinite;  
+}  
 
-    body {
-      background: linear-gradient(135deg, #0e0e0e, #1b1b2f);
-      color: #e0e0e0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      padding: 40px;
-      line-height: 1.6;
-      animation: backgroundShift 20s ease infinite;
-    }
+@keyframes backgroundShift {  
+  0% { background-position: 0% 50%; }  
+  50% { background-position: 100% 50%; }  
+  100% { background-position: 0% 50%; }  
+}  
 
-    @keyframes backgroundShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+h1, h2 {  
+  background: linear-gradient(90deg, #8a2be2, #00bfff, #8a2be2);  
+  background-size: 300% 300%;  
+  color: transparent;  
+  -webkit-background-clip: text;  
+  background-clip: text;  
+  animation: gradientFlow 6s ease infinite;  
+  margin-bottom: 10px;  
+  font-size: 4em;
+}  
 
-    h1, h2 {
-      background: linear-gradient(90deg, #8a2be2, #00bfff, #8a2be2);
-      background-size: 300% 300%;
-      color: transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
-      animation: gradientFlow 6s ease infinite;
-      margin-bottom: 10px;
-    }
+@keyframes gradientFlow {  
+  0% { background-position: 0% 50%; }  
+  50% { background-position: 100% 50%; }  
+  100% { background-position: 0% 50%; }  
+}  
 
-    @keyframes gradientFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+textarea {  
+  width: 100%;  
+  height: 200px;  
+  background: #121220;  
+  color: #b4aaff;  
+  font-family: "Fira Code", monospace;  
+  padding: 15px;  
+  border: 1px solid #333;  
+  border-radius: 12px;  
+  resize: vertical;  
+  box-shadow: 0 0 12px #6f00ff44;  
+  transition: box-shadow 0.4s ease;  
+}  
+textarea:focus {  
+  outline: none;  
+  box-shadow: 0 0 16px #8a2be2;  
+}  
 
-    textarea {
-      width: 100%;
-      height: 200px;
-      background: #121220;
-      color: #b4aaff;
-      font-family: "Fira Code", monospace;
-      padding: 15px;
-      border: 1px solid #333;
-      border-radius: 12px;
-      resize: vertical;
-      box-shadow: 0 0 12px #6f00ff44;
-      transition: box-shadow 0.4s ease;
-    }
-    textarea:focus {
-      outline: none;
-      box-shadow: 0 0 16px #8a2be2;
-    }
+#preview, #filePreview {  
+  background: #ffffff;  
+  color: #000000;  
+  padding: 25px;  
+  border-radius: 14px;  
+  box-shadow: 0 0 12px #999;  
+  margin-top: 30px;  
+  font-size: 1rem;  
+  transition: transform 0.4s ease;  
+}  
 
-    #preview, #filePreview {
-      background: #ffffff;
-      color: #000000;
-      padding: 25px;
-      border-radius: 14px;
-      box-shadow: 0 0 12px #999;
-      margin-top: 30px;
-      font-size: 1rem;
-      transition: transform 0.4s ease;
-    }
+#preview:hover, #filePreview:hover {  
+  transform: scale(1.01);  
+}  
 
-    #preview:hover, #filePreview:hover {
-      transform: scale(1.01);
-    }
+button {  
+  background: linear-gradient(270deg, #8a2be2, #00bfff, #8a2be2);  
+  background-size: 400% 400%;  
+  color: #fff;  
+  border: none;  
+  padding: 12px 24px;  
+  margin: 10px 10px 20px 0;  
+  font-weight: bold;  
+  border-radius: 10px;  
+  box-shadow: 0 4px 15px #8a2be280;  
+  cursor: pointer;  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;  
+  animation: gradientFlow 8s ease infinite;  
+}  
 
-    button {
-      background: linear-gradient(270deg, #8a2be2, #00bfff, #8a2be2);
-      background-size: 400% 400%;
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      margin: 10px 10px 20px 0;
-      font-weight: bold;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px #8a2be280;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      animation: gradientFlow 8s ease infinite;
-    }
+button:hover {  
+  transform: scale(1.08);  
+  box-shadow: 0 6px 20px #00bfff99;  
+}  
 
-    button:hover {
-      transform: scale(1.08);
-      box-shadow: 0 6px 20px #00bfff99;
-    }
+input[type="file"], input[type="text"] {  
+  margin-bottom: 15px;  
+  color: #ccc;  
+  background: #2b2b3b;  
+  padding: 10px;  
+  border: 1px solid #444;  
+  border-radius: 8px;  
+  transition: border 0.3s ease, box-shadow 0.3s ease;  
+  display: block;  
+}  
 
-    input[type="file"], input[type="text"] {
-      margin-bottom: 15px;
-      color: #ccc;
-      background: #2b2b3b;
-      padding: 10px;
-      border: 1px solid #444;
-      border-radius: 8px;
-      transition: border 0.3s ease, box-shadow 0.3s ease;
-      display: block;
-    }
+input[type="file"]:hover, input[type="text"]:hover {  
+  border-color: #8a2be2;  
+  box-shadow: 0 0 6px #8a2be2;  
+}  
 
-    input[type="file"]:hover, input[type="text"]:hover {
-      border-color: #8a2be2;
-      box-shadow: 0 0 6px #8a2be2;
-    }
+a {  
+  color: #99e0ff;  
+  text-decoration: none;  
+  font-weight: 500;  
+  transition: color 0.3s ease;  
+}  
 
-    a {
-      color: #99e0ff;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
+a:hover {  
+  text-decoration: underline;  
+  color: #c0b6ff;  
+}  
 
-    a:hover {
-      text-decoration: underline;
-      color: #c0b6ff;
-    }
+hr {  
+  border: none;  
+  border-top: 1px solid #444;  
+  margin: 50px 0;  
+  opacity: 0.3;  
+}
 
-    hr {
-      border: none;
-      border-top: 1px solid #444;
-      margin: 50px 0;
-      opacity: 0.3;
-    }
-  </style>
-</head>
+  </style>  
+</head>  
 <body>
-  <h1>FluxLang - язык легкого програмирования</h1><br>
-  <h2>1. Редактор .fl-документа</h2>
-
-  <input type="file" id="openFileInput" accept=".fl" />
-  <textarea id="code" placeholder="Введите FluxLang-код..."></textarea><br>
-
-  <input type="text" id="filenameInput" placeholder="Введите имя файла без расширения (.fl)" />
-
-  <button onclick="render()">📄 Преобразовать</button>
-  <button onclick="save()">💾 Сохранить как .fl</button>
-
-  <div id="preview"></div>
-  <hr />
-
-  <h2>2. Рассмотреть файл</h2>
-  <input type="file" id="viewInput" accept=".fl" /><br />
-  <div id="filePreview">Выберите .fl файл для просмотра его содержимого.</div>
-
-  <script>
-    function parseFluxLang(code) {
-      return code
-        .replace(/\/t (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<p style="color:${color};">${text}</p>`)
-        .replace(/\/h (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<h1 style="color:${color};">${text}</h1>`)
-        .replace(/\/ht (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<h3 style="color:${color};">${text}</h3>`)
-        .replace(/\/e (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<i style="color:${color};">${text}</i>`)
-        .replace(/\/big (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<b style="color:${color}; font-size:1.3em;">${text}</b>`)
-        .replace(/\/small (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<small style="color:${color};">${text}</small>`)
-        .replace(/\/b (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<button style="color:${color}; border: 1px solid ${color};">${text}</button>`)
-        .replace(/\/b href="(.*?)" (.*?)\/\/(.*?)\/\//gs, (_, href, color, text) => `<a href="${href}" target="_blank"><button style="color:${color}; border: 1px solid ${color};">${text}</button></a>`)
-        .replace(/\/st (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<s style="color:${color};">${text}</s>`)
-        .replace(/\/u (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<u style="color:${color};">${text}</u>`)
-        .replace(/\/h\/(.*?)\/\//gs, '<h1>$1</h1>')
-        .replace(/\/ht\/(.*?)\/\//gs, '<h3>$1</h3>')
-        .replace(/\/t\/(.*?)\/\//gs, '<p>$1</p>')
-        .replace(/\/e\/(.*?)\/\//gs, '<i>$1</i>')
-        .replace(/\/big\/(.*?)\/\//gs, '<b>$1</b>')
-        .replace(/\/small\/(.*?)\/\//gs, '<small>$1</small>')
-        .replace(/\/b\/(.*?)\/\//gs, '<button>$1</button>')
-        .replace(/\/b href="(.*?)"\/(.*?)\/\/b\//gs, '<a href="$1" target="_blank"><button>$2</button></a>')
-        .replace(/\/href="(.*?)"\/(.*?)\/\/a\//gs, '<a href="$1" target="_blank">$2</a>')
-        .replace(/\/st\/(.*?)\/\//gs, '<s>$1</s>')
-        .replace(/\/u\/(.*?)\/\//gs, '<u>$1</u>')
-        .replace(/\/li 1\/(.*?)\/\//gs, function(_, p1) {
-          if (!window.__listCount) window.__listCount = 1;
-          return `${window.__listCount++}. ${p1}<br>`;
-        })
-        .replace(/\/li\/(.*?)\/\//gs, '• $1<br>')
-        .replace(/\/cent\/(.*?)\/\//gs, '<div style="text-align:center;">$1</div>')
-        .replace(/\/rb\//g, '<br>');
-    }
-
-    function render() {
-      window.__listCount = 1;
-
-      const input = document.getElementById('code').value;
-
-      // Ищем тег /background (цвет)//
-      const backgroundMatch = input.match(/\/background\s+([^\/]+)\/\//);
-      const backgroundColor = backgroundMatch ? backgroundMatch[1].trim() : null;
-
-      // Убираем тег /background ...// из исходного кода перед парсингом
-      const cleanedInput = input.replace(/\/background\s+[^\/]+\/\//g, '');
-
-      const html = parseFluxLang(cleanedInput);
-      const preview = document.getElementById('preview');
-
-      preview.innerHTML = html;
-
-      if (backgroundColor) {
-        preview.style.backgroundColor = backgroundColor;
-      } else {
-        preview.style.backgroundColor = "#ffffff";
-      }
-    }
-
-    function save() {
-      const content = document.getElementById('code').value;
-      const filenameInput = document.getElementById('filenameInput').value.trim();
-      if (!filenameInput) {
-        alert("Введите имя файла перед сохранением.");
-        return;
-      }
-      const filename = `${filenameInput}.fl`;
-      const blob = new Blob([content], { type: 'text/plain' });
-      const link = document.createElement('a');
-      link.download = filename;
-      link.href = URL.createObjectURL(blob);
-      link.click();
-    }
-
-    document.getElementById('openFileInput').addEventListener('change', function () {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          document.getElementById('code').value = e.target.result;
-        };
-        reader.readAsText(file);
-      }
-    });
-
-    document.getElementById('viewInput').addEventListener('change', function () {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          window.__listCount = 1;
-          const input = e.target.result;
-          const backgroundMatch = input.match(/\/background\s+([^\/]+)\/\//);
-          const backgroundColor = backgroundMatch ? backgroundMatch[1].trim() : null;
-          const cleanedInput = input.replace(/\/background\s+[^\/]+\/\//g, '');
-          const parsed = parseFluxLang(cleanedInput);
-          const filePreview = document.getElementById('filePreview');
-          filePreview.innerHTML = parsed;
-          filePreview.style.backgroundColor = backgroundColor || "#ffffff";
-        };
-        reader.readAsText(file);
-      }
-    });
-  </script>
-
-  <hr />
-  <div style="text-align:center; margin-top: 40px;">
-    <p style="font-size: 1.2em; color: #ffccff;">
-      НЕ ЗНАЕШЬ ЯЗЫК FLUXLANG? НУ ТОГДА ТЕБЕ СЮДА:
-    </p>
-    <a href="https://murka-pon123.github.io/FLUXLANG-teg/" target="_blank">
-      <button>📘 Выучить FluxLang</button>
-    </a>
+  <div id="home" style="text-align:center;">
+    <h1>FluxLang</h1>
+    <p style="font-size: 1.2em; max-width: 600px; margin: 0 auto;">Лёгкий язык программирования для быстрого создания интерактивных документов</p>
+    <br>
+    <button onclick="showSection('library')">📚 мои проекты</button>
+    <button onclick="document.getElementById('openFileInput').click()">📂 Загрузить .fl файл</button>
+    <a href="https://murka-pon123.github.io/FLUXLANG-teg/" target="_blank"><button>📘 Выучить FluxLang</button></a>
   </div>
+
+  <div id="library" style="display:none;">
+    <h2>📚 Мои проекты</h2>
+    <input type="text" id="newProjectName" placeholder="Название нового проекта" />
+    <button onclick="createProject()">➕ Создать</button>
+    <select id="projectSelector" onchange="loadProject(this.value)">
+      <option disabled selected>Выберите проект</option>
+    </select>
+    <br><br>
+    <textarea id="code" placeholder="Редактируйте FluxLang-код..."></textarea><br>
+    <button onclick="render()">📄 Преобразовать</button>
+    <button onclick="saveProject()">💾 Сохранить</button>
+    <button onclick="downloadFL()">📥 Скачать .fl файл</button>
+    <div id="preview"></div>
+    <button onclick="showSection('home')">🏠 Назад на главную</button>
+  </div>
+
+  <input type="file" id="openFileInput" accept=".fl" style="display:none;" />
+  <div id="filePreview" style="margin-top: 30px;"></div>
+
+  <footer style="margin-top: 60px; text-align:center; font-size: 0.9em; color: #888;">
+    <hr>
+    FluxLang © 2025. Сделано для обучения.
+  </footer>
+
+<script>
+  function showSection(id) {
+    document.getElementById('home').style.display = id === 'home' ? 'block' : 'none';
+    document.getElementById('library').style.display = id === 'library' ? 'block' : 'none';
+    if (id === 'library') refreshProjectList();
+  }
+
+  function createProject() {
+    const name = document.getElementById('newProjectName').value.trim();
+    if (!name) return alert("Введите название проекта");
+    if (localStorage.getItem("flux_project_" + name)) return alert("Проект с таким именем уже существует");
+    localStorage.setItem("flux_project_" + name, "");
+    refreshProjectList();
+    loadProject(name);
+  }
+
+  function refreshProjectList() {
+    const select = document.getElementById('projectSelector');
+    select.innerHTML = '<option disabled selected>Выберите проект</option>';
+    Object.keys(localStorage)
+      .filter(key => key.startsWith("flux_project_"))
+      .forEach(key => {
+        const name = key.replace("flux_project_", "");
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        select.appendChild(option);
+      });
+  }
+
+  function loadProject(name) {
+    const data = localStorage.getItem("flux_project_" + name);
+    document.getElementById("code").value = data || "";
+  }
+
+  function saveProject() {
+    const name = document.getElementById("projectSelector").value;
+    if (!name) return alert("Сначала выберите проект");
+    const code = document.getElementById("code").value;
+    localStorage.setItem("flux_project_" + name, code);
+    alert("Сохранено!");
+  }
+
+  function parseFluxLang(code) {
+    return code
+      .replace(/\/t (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<p style="color:${color};">${text}</p>`)
+      .replace(/\/h (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<h1 style="color:${color};">${text}</h1>`)
+      .replace(/\/ht (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<h3 style="color:${color};">${text}</h3>`)
+      .replace(/\/e (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<i style="color:${color};">${text}</i>`)
+      .replace(/\/big (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<b style="color:${color}; font-size:1.3em;">${text}</b>`)
+      .replace(/\/small (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<small style="color:${color};">${text}</small>`)
+      .replace(/\/b (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<button style="color:${color}; border: 1px solid ${color};">${text}</button>`)
+      .replace(/\/b href="(.*?)" (.*?)\/\/(.*?)\/\//gs, (_, href, color, text) => `<a href="${href}" target="_blank"><button style="color:${color}; border: 1px solid ${color};">${text}</button></a>`)
+      .replace(/\/st (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<s style="color:${color};">${text}</s>`)
+      .replace(/\/u (.*?)\/\/(.*?)\/\//gs, (_, color, text) => `<u style="color:${color};">${text}</u>`)
+      .replace(/\/h\/(.*?)\/\//gs, '<h1>$1</h1>')
+      .replace(/\/ht\/(.*?)\/\//gs, '<h3>$1</h3>')
+      .replace(/\/t\/(.*?)\/\//gs, '<p>$1</p>')
+      .replace(/\/e\/(.*?)\/\//gs, '<i>$1</i>')
+      .replace(/\/big\/(.*?)\/\//gs, '<b>$1</b>')
+      .replace(/\/small\/(.*?)\/\//gs, '<small>$1</small>')
+      .replace(/\/b\/(.*?)\/\//gs, '<button>$1</button>')
+      .replace(/\/b href="(.*?)"\/(.*?)\/\/b\//gs, '<a href="$1" target="_blank"><button>$2</button></a>')
+      .replace(/\/href="(.*?)"\/(.*?)\/\/a\//gs, '<a href="$1" target="_blank">$2</a>')
+      .replace(/\/st\/(.*?)\/\//gs, '<s>$1</s>')
+      .replace(/\/u\/(.*?)\/\//gs, '<u>$1</u>')
+      .replace(/\/li 1\/(.*?)\/\//gs, function(_, p1) {
+        if (!window.__listCount) window.__listCount = 1;
+        return `${window.__listCount++}. ${p1}<br>`;
+      })
+      .replace(/\/li\/(.*?)\/\//gs, '• $1<br>')
+      .replace(/\/cent\/(.*?)\/\//gs, '<div style="text-align:center;">$1</div>')
+      .replace(/\/rb\//g, '<br>');
+  }
+
+  function render() {
+    window.__listCount = 1;
+    const input = document.getElementById('code').value;
+    const backgroundMatch = input.match(/\/background\s+([^\/]+)\/\//);
+    const backgroundColor = backgroundMatch ? backgroundMatch[1].trim() : null;
+    const cleanedInput = input.replace(/\/background\s+[^\/]+\/\//g, '');
+    const html = parseFluxLang(cleanedInput);
+    const preview = document.getElementById('preview');
+    preview.innerHTML = html;
+    preview.style.backgroundColor = backgroundColor || "#ffffff";
+  }
+
+  document.getElementById('openFileInput').addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const content = e.target.result;
+        document.getElementById("filePreview").innerHTML = parseFluxLang(content);
+      };
+      reader.readAsText(file);
+    }
+  });
+  function downloadFL() {
+  const code = document.getElementById("code").value;
+  const filename = (document.getElementById("projectSelector").value || "flux_project") + ".fl";
+  const blob = new Blob([code], { type: "text/plain" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+</script>
 </body>
-                                  </html>
+</html> 
